@@ -1,0 +1,35 @@
+application:
+    image: yeclense/code-symfony
+    volumes:
+        - .:/var/www/symfony
+        - ./app/logs:/var/www/symfony/app/logs
+    tty: true
+db:
+    image: mysql
+    ports:
+        - 3306:3306
+    volumes:
+        - .mysql:/var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: symfony
+        MYSQL_USER: root
+        MYSQL_PASSWORD: root
+phpfpm:
+    image: yeclense/php-fpm-symfony
+    expose:
+        - 9000:9000
+    volumes_from:
+        - application
+    links:
+        - db
+nginx:
+    image: yeclense/nginx-symfony
+    ports:
+        - 80:80
+    links:
+        - phpfpm
+    volumes_from:
+        - application
+    volumes:
+        - ./app/logs/nginx/:/var/log/nginx
