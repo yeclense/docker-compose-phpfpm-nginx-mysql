@@ -5,11 +5,11 @@ application:
         - ./app/logs:/var/www/symfony/app/logs
     tty: true
 db:
-    image: mysql
+    image: yeclense/mysql-symfony
     ports:
         - 3306:3306
     volumes:
-        - .mysql:/var/lib/mysql
+        - ./docker/mysql/data:/var/lib/mysql
     environment:
         MYSQL_ROOT_PASSWORD: root
         MYSQL_DATABASE: symfony
