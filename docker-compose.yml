@@ -7,7 +7,7 @@ application:
 db:
     image: yeclense/mysql-symfony
     ports:
-        - 3306:3306
+        - "3306:3306"
     volumes:
         - ./docker/mysql/data:/var/lib/mysql
     environment:
@@ -18,7 +18,7 @@ db:
 phpfpm:
     image: yeclense/php-fpm-symfony
     expose:
-        - 9000:9000
+        - "9000"
     volumes_from:
         - application
     links:
@@ -26,7 +26,7 @@ phpfpm:
 nginx:
     image: yeclense/nginx-symfony
     ports:
-        - 80:80
+        - "80:80"
     links:
         - phpfpm
     volumes_from:
