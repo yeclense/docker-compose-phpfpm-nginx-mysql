@@ -23,4 +23,6 @@ RUN touch /usr/local/etc/php/conf.d/xdebug.ini; \
 
 RUN usermod -u 1000 www-data
 
+WORKDIR /var/www/symfony
+
 CMD ["php-fpm", "-F"]
