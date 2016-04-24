@@ -8,8 +8,21 @@ ADD symfony.ini /ect/php5/cli/conf.d/
 # Needed for curl php extencions
 RUN apt-get update && apt-get install -y libcurl4-gnutls-dev php5-apcu zlib1g-dev
 
-# Install php extencions
+# Install php extensions
 RUN docker-php-ext-install gettext mbstring opcache mysql mysqli pdo_mysql zip
+
+# Install intl
+RUN apt-get update && apt-get install -y \
+        libicu-dev \
+    && docker-php-ext-install -j$(nproc) intl
+
+# Install gd
+RUN apt-get update && apt-get install -y \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libpng12-dev \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) gd
 
 # zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so
 RUN pecl install xdebug
