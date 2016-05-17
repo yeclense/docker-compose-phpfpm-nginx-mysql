@@ -3,7 +3,7 @@ FROM php:5.6-fpm
 MAINTAINER Daniel Javier Martín Torres <dani@yecladeyeltes.net>
 
 ADD symfony.ini /usr/local/etc/php/conf.d/
-ADD symfony.ini /ect/php5/cli/conf.d/
+ADD symfony.ini /etc/php5/cli/conf.d/
 
 # Needed for curl php extencions
 RUN apt-get update && apt-get install -y libcurl4-gnutls-dev php5-apcu zlib1g-dev
