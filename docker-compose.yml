@@ -1,35 +1,40 @@
-application:
-    image: yeclense/code-symfony
-    volumes:
-        - .:/var/www/symfony
-        - ./app/logs:/var/www/symfony/app/logs
-    tty: true
-db:
-    image: yeclense/mysql-symfony
-    ports:
-        - "3306:3306"
-    volumes:
-        - ./docker/mysql/data:/var/lib/mysql
-    environment:
-        MYSQL_ROOT_PASSWORD: root
-        MYSQL_DATABASE: symfony
-        MYSQL_USER: root
-        MYSQL_PASSWORD: root
-phpfpm:
-    image: yeclense/php-fpm-symfony
-    expose:
-        - "9000"
-    volumes_from:
-        - application
-    links:
-        - db
-nginx:
-    image: yeclense/nginx-symfony
-    ports:
-        - "80:80"
-    links:
-        - phpfpm
-    volumes_from:
-        - application
-    volumes:
-        - ./app/logs/nginx/:/var/log/nginx
+version: '2'
+
+services:
+    db:
+        image: mysql
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./.data/db:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    phpfpm:
+        build: ./docker/phpfpm
+        volumes:
+            - ${SYMFONY_APP_PATH}:/var/www/symfony
+            - ./logs/symfony:/var/www/symfony/app/logs
+
+    nginx:
+        build: ./docker/nginx
+        ports:
+            - 80:80
+        volumes_from:
+            - phpfpm
+        volumes:
+            - ./logs/nginx/:/var/log/nginx
+
+    elk:
+        image: willdurand/elk
+        ports:
+            - 81:80
+        volumes:
+            - ./elk/logstash:/etc/logstash
+            - ./elk/logstash/patterns:/opt/logstash/patterns
+        volumes_from:
+            - phpfpm
+            - nginx

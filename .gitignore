@@ -1,5 +1,4 @@
-# Created by .ignore support plugin (hsz.mobi)
 .idea
-app
-docker/mysql/data/*
-!docker/mysql/data/.gitkeep
+/logs
+/.data
+.env
