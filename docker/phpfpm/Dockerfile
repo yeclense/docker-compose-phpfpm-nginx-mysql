@@ -4,7 +4,11 @@ MAINTAINER Daniel Javier Martín Torres <dani@yecladeyeltes.net>
 
 RUN apt-get update && apt-get install -y \
     git \
+    # for intl extension
+    libicu-dev \
     unzip
+
+ADD php.ini /usr/local/etc/php/
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
@@ -16,7 +20,7 @@ RUN rm /etc/localtime \
 && "date"
 
 # Type docker-php-ext-install to see available extensions
-RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql intl opcache
 
 # install xdebug
 RUN pecl install xdebug \
