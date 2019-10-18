@@ -1,1 +1,1 @@
-# docker-compose-symfony2-phpfpm-nginx-mysql
+# docker-compose-phpfpm-nginx-mysql
