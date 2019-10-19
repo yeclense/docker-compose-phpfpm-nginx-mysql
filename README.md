@@ -1,1 +1,2 @@
 # docker-compose-phpfpm-nginx-mysql
+[![Build Status](https://travis-ci.org/yeclense/docker-compose-phpfpm-nginx-mysql.svg?branch=master)](https://travis-ci.org/yeclense/docker-compose-phpfpm-nginx-mysql)
