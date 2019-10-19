@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.3-fpm
 
 MAINTAINER Daniel Javier Martín Torres <dani@yecladeyeltes.net>
 
