@@ -18,7 +18,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
   phpfpm:
-    build: ./docker/phpfpm
+    build: ./phpfpm
     volumes:
       - ${SYMFONY_APP_PATH}:/var/www/symfony
       - symfony-logs:/var/www/symfony/app/logs
@@ -31,8 +31,8 @@ services:
       - NGINX_HOST=symfony.local
       - NGINX_PORT=80
     volumes:
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./docker/nginx/symfony.conf:/etc/nginx/conf.d/symfony.template:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/symfony.conf:/etc/nginx/conf.d/symfony.template:ro
       - ${SYMFONY_APP_PATH}:/var/www/symfony
       - nginx-logs:/var/log/nginx
     command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_PORT' < /etc/nginx/conf.d/symfony.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
@@ -42,7 +42,7 @@ services:
     ports:
       - 81:80
     volumes:
-      - ./docker/elk/logstash:/etc/logstash
-      - ./docker/elk/logstash/patterns:/opt/logstash/patterns
+      - ./elk/logstash:/etc/logstash
+      - ./elk/logstash/patterns:/opt/logstash/patterns
       - nginx-logs:/var/log/nginx
       - symfony-logs:/var/log/symfony
