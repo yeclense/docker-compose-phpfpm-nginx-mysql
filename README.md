@@ -25,8 +25,8 @@ You can install now your favorite Symfony version, skeleton or component mix. Th
 
 ## Check logs
 You have an ELK setup where you can check your project logs:
-``http>//elk.local``
 
+``http://elk.local``
 
 ## Stop and remove containers
 To stop devenv and remove its containers:
