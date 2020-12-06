@@ -16,6 +16,10 @@ before_install:
   - docker-compose -v
   - docker -v
   - cp .env.dist .env
+  - make hosts
 
 script:
   - make start
+  - curl -Is http://symfony.local
+  - curl -Is http://symfony.local/hola.html
+  - curl -Is http://elk.local

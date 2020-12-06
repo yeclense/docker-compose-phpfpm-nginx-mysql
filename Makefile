@@ -50,3 +50,6 @@ load-database-backup:
 	@until ${DOCKER} exec -T -e MYSQL_PWD=${MYSQL_ROOT_PASSWORD} mysql mysqladmin status -h localhost -u root &> /dev/null; do echo "Waiting for mysql to accept connections..."; sleep 10; done
 	@echo "Loading dev database from 'docker/database/backup.sql'"
 	@cat docker/database/backup.sql 2>/dev/null | ${DOCKER} exec -T -e MYSQL_PWD=${MYSQL_ROOT_PASSWORD} mysql /usr/bin/mysql -u root ${MYSQL_DATABASE}
+
+hosts:
+	@echo '127.0.0.1	symfony.local elk.local' | sudo tee -a /etc/hosts
