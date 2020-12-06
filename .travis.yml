@@ -20,6 +20,6 @@ before_install:
 
 script:
   - make start
-  - curl -Is http://symfony.local
-  - curl -Is http://symfony.local/hola.html
-  - curl -Is http://elk.local
+  - curl -Is http://symfony.local | head -1
+  - curl -Is http://symfony.local/hola.html | head -1
+  - curl -Is http://elk.local | head -1
