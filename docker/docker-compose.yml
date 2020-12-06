@@ -1,0 +1,55 @@
+version: '3.7'
+
+volumes:
+  nginx-logs:
+
+services:
+  proxy:
+    image: jwilder/nginx-proxy:alpine
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  phpfpm:
+    image: yeclense/php-fpm-symfony:7.4
+    build: ./phpfpm
+    volumes:
+      - ${SYMFONY_APP_PATH}:/var/www/symfony:cached
+      - ${SYMFONY_APP_PATH}/var/log:/var/www/symfony/var/log:cached
+    environment:
+      PHP_IDE_CONFIG: "serverName=Symfony-PHPFPM"
+
+  nginx:
+    image: nginx:latest
+    environment:
+      VIRTUAL_HOST: symfony.local
+      NGINX_HOST: symfony.local
+      NGINX_PORT: 80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/symfony.conf:/etc/nginx/conf.d/symfony.template:ro
+      - ${SYMFONY_APP_PATH}:/var/www/symfony:cached
+      - nginx-logs:/var/log/nginx:cached
+    command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_PORT' < /etc/nginx/conf.d/symfony.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
+
+  elk:
+    image: willdurand/elk
+    environment:
+      VIRTUAL_HOST: elk.local
+    volumes:
+      - ./elk/logstash:/etc/logstash:ro
+      - ./elk/logstash/patterns:/opt/logstash/patterns:ro
+      - nginx-logs:/var/log/nginx:ro
+      - ${SYMFONY_APP_PATH}/var/log:/var/log/symfony:ro

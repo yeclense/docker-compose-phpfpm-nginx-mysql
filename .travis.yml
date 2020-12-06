@@ -1,7 +1,7 @@
 sudo: required
 
 env:
-  DOCKER_COMPOSE_VERSION: 1.24.1
+  DOCKER_COMPOSE_VERSION: 1.27.4
 
 services:
   - docker
@@ -15,12 +15,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - docker-compose -v
   - docker -v
-  # symfony application folder
-  - mkdir symfony
   - cp .env.dist .env
-  - cat docker-compose.yml
 
 script:
-  - docker-compose build
-  - docker-compose up -d
-  - docker-compose ps
+  - make
