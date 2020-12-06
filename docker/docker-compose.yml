@@ -23,7 +23,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
   phpfpm:
-    image: yeclense/php-fpm-symfony:7.4
+    image: yeclense/php-fpm-symfony:8.0
     volumes:
       - ${SYMFONY_APP_PATH}:/var/www/symfony:cached
       - ${SYMFONY_APP_PATH}/var/log:/var/www/symfony/var/log:cached
