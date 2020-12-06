@@ -31,5 +31,4 @@ You have an ELK setup where you can check your project logs:
 ## Stop and remove containers
 To stop devenv and remove its containers:
 
-``make nodev`
-`
+``make nodev``
